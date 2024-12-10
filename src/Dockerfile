@@ -11,4 +11,4 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set the entrypoint to run main.py
-ENTRYPOINT ["fastapi", "dev", "--host", "0.0.0.0", "main.py"]
+#ENTRYPOINT ["fastapi", "dev", "--host", "0.0.0.0", "main.py"]

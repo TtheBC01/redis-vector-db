@@ -6,7 +6,7 @@ from redis import Redis
 from rq import Queue
 
 redis_client = Redis.from_url('redis://redis-server:6379')
-redis_queue = Queue(connection=redis_client)
+redis_queue = Queue('default', is_async=False, connection=redis_client)
 
 router = APIRouter()
 
@@ -31,10 +31,10 @@ async def get_models():
 @router.post('/embed/')
 async def create_embedding(documentpayload: DocumentPayload):
     try:
-        response, keys = store_embeddings(documentpayload=documentpayload)
-        return {"response": response, "keys": keys}
-        # job = redis_queue.enqueue(store_embeddings, documentpayload)
-        # return {"job_id": job.id}
+        # response, keys = store_embeddings(documentpayload=documentpayload)
+        # return {"response": response, "keys": keys}
+        job = redis_queue.enqueue(store_embeddings, documentpayload)
+        return {"job_id": job.id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
     

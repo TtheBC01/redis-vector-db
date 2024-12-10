@@ -3,20 +3,22 @@ services:
     image: vector-gateway
     container_name: fastapi
     volumes:
-      - ./src/fastAPI:/app
+      - ./src:/app
     ports:
       - "8000:8000"
+    command: fastapi dev --host 0.0.0.0 main.py
+    depends_on:
+      - python-rq-worker
+
+  python-rq-worker:
+    image: vector-gateway
+    container_name: rq-worker
+    command: rq worker --url redis://redis-server:6379 default
+    volumes:
+      - ./src:/app
     depends_on:
       - redis
       - ollama
-
-  python-rq-worker:
-    image: python-rq-worker
-    container_name: rq-worker
-    volumes:
-      - ./src/fastAPI:/app
-    depends_on:
-      - redis
 
   redis:
     image: redis/redis-stack-server:latest
