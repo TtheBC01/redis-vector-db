@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
-from .utilities import pull_model, list_models, store_embeddings, query_embeddings
-from .models import DocumentPayload
+from utilities import pull_model, list_models, store_embeddings, query_embeddings
+from models import DocumentPayload
 
 from redis import Redis
 from rq import Queue
 
 redis_client = Redis.from_url('redis://redis-server:6379')
-redis_queue = Queue('default', is_async=False, connection=redis_client)
+redis_queue = Queue('default', is_async=True, connection=redis_client)
 
 router = APIRouter()
 

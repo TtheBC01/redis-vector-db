@@ -1,8 +1,8 @@
 # Redis vector store demo
 
-This repo spins up a minimal docker stack that leverages [Redis](https://redis.io/) + [RedisVL](https://redis.io/docs/latest/integrate/redisvl/) as a vector database for calculating semantic similarity between text strings.
+This repo spins up a minimal docker stack that leverages [Redis](https://redis.io/) + [RedisVL](https://redis.io/docs/latest/integrate/redisvl/) as a vector database for calculating semantic similarity between "documents" (text strings).
 
-The stack defined in `docker-compose.yaml` creates an instance for Redis (for storing vector embeddings), [Ollama](https://ollama.com/) (for creating embeddings), and [FastAPI](https://fastapi.tiangolo.com/) (as a simple "business logic" gateway). 
+The stack defined in `docker-compose.yaml` creates an instance for Redis (for storing vector embeddings), [Ollama](https://ollama.com/) (for creating embeddings), and [FastAPI](https://fastapi.tiangolo.com/) (as a simple "business logic" gateway) as well as an [RQ](https://python-rq.org/) worker service for embedding documents asynchronously. 
 
 ## 1. Buid the FastAPI gateway
 
@@ -61,3 +61,7 @@ curl -X GET http://localhost:8000/search/ -H "Content-Type: application/json" -d
 ```
 
 You'll get the top 3 documents that match your query string in order of relevance as well as their vector distance (computed using cosine similarity).
+
+## Speed up Embeddings with a GPU
+
+You can greatly increase the speed of embeddings by mounting a local gpu to the Ollama service defined in the `docker-compose.yml` file. 

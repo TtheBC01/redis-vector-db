@@ -6,8 +6,10 @@ services:
       - ./src:/app
     ports:
       - "8000:8000"
-    command: fastapi dev --host 0.0.0.0 main.py
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
     depends_on:
+      - ollama
+      - redis
       - python-rq-worker
 
   python-rq-worker:
