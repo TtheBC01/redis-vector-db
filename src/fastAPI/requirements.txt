@@ -1,4 +1,6 @@
 fastapi[standard]
+redis
 redisvl
+rq
 ollama
 numpy

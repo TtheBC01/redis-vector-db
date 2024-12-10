@@ -22,7 +22,7 @@ Once you've successfully build the server application and tagged it as `vector-g
 docker compose up -d
 ```
 
-You should have 3 services up: `python-fastapi`, `redis-server`, and `ollama-service`. If you visit `http://localhost:8000`, you should get 
+You should have 3 services up: `fastapi`, `redis-server`, and `ollama-service`. If you visit `http://localhost:8000`, you should get 
 
 ```sh
 {"message":"Redis vector demo is up!"}
@@ -39,7 +39,7 @@ curl -X GET "http://localhost:8000/load-model/?model=nomic-embed-text"
 This model embeds text strings into a 768-dimensional vector field. There are other embedding models offered by Ollama too. Check the models you have cached by running:
 
 ```sh
-curl -X GET http://localhost:9000/available-models/
+curl -X GET http://localhost:8000/available-models/
 ```
 
 ## 4. Embed some text
@@ -47,7 +47,7 @@ curl -X GET http://localhost:9000/available-models/
 Try embedding some text and storing it in your Redis instance like this:
 
 ```sh
-curl -X POST http://localhost:8000/embed/ -H "Content-Type: application/json" -d '{"payload": ["Paris is the capital of France.", "The dog ran after the cat.", "What day of the week is it?"]}'
+curl -X POST http://localhost:8000/embed/ -H "Content-Type: application/json" -d '{"payload": ["Paris is the capital of France.", "The dog ran after the cat.", "Mark Twain was not his real name."]}'
 ```
 
 You can embed many many "documents" at once, but if your text blob is longer than the context size of your embedding model, any text over the limit will be ignored by the model. If this is your situation, you'll need to "chunk" you documents appropriately. For reference, the [`nomic-embed-text`](https://ollama.com/library/nomic-embed-text) model has a context size of 8192 tokens. 
