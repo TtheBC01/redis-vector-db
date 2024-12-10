@@ -33,7 +33,7 @@ You should have 3 services up: `python-fastapi`, `redis-server`, and `ollama-ser
 You'll need to download an embedding model in order to build a queryable vector store. Run the following command to pull [Nomic's](https://www.nomic.ai/) open source embedding model:
 
 ```sh
-curl -X GET http://localhost:8000/load-model/?model=nomic-embed-text
+curl -X GET "http://localhost:8000/load-model/?model=nomic-embed-text"
 ```
 
 This model embeds text strings into a 768-dimensional vector field. There are other embedding models offered by Ollama too. Check the models you have cached by running:
@@ -50,7 +50,7 @@ Try embedding some text and storing it in your Redis instance like this:
 curl -X POST http://localhost:8000/embed/ -H "Content-Type: application/json" -d '{"payload": ["Paris is the capital of France.", "The dog ran after the cat.", "What day of the week is it?"]}'
 ```
 
-You can embed many many "documents" at once, but if your text blob is longer than the context size of your embedding model, any text over the limit will be ignored by the model. If this is your situation, you'll need to "chunk" you documents appropriately. For reference, the `nomic-embed-text` model has a context size of 8196 tokens. 
+You can embed many many "documents" at once, but if your text blob is longer than the context size of your embedding model, any text over the limit will be ignored by the model. If this is your situation, you'll need to "chunk" you documents appropriately. For reference, the [`nomic-embed-text`](https://ollama.com/library/nomic-embed-text) model has a context size of 8192 tokens. 
 
 ## 5. Check similarity
 

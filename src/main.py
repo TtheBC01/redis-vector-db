@@ -38,7 +38,7 @@ redis_index = SearchIndex.from_dict(redis_schema)
 redis_index.connect('redis://redis-server:6379')
 redis_index.create(overwrite=True)
 
-class TextPayload(BaseModel):
+class DocumentPayload(BaseModel):
     payload: str | List[str]
 
 app = FastAPI()
@@ -66,7 +66,7 @@ async def get_models():
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
     
 @app.post('/embed/')
-async def create_embedding(textpayload: TextPayload):
+async def create_embedding(textpayload: DocumentPayload):
     try:
         # embed the vectors using ollama inference service
         response = ollama_client.embed(model='nomic-embed-text', input=textpayload.payload)
@@ -78,7 +78,7 @@ async def create_embedding(textpayload: TextPayload):
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
     
 @app.get('/search/')
-async def search_embeddings(textpayload: TextPayload):
+async def search_embeddings(textpayload: DocumentPayload):
     try:
         print("Query:", textpayload.payload)
         # embed the vectors using ollama inference service
