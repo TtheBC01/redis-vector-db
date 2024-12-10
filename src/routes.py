@@ -14,8 +14,8 @@ router = APIRouter()
 async def load_model(model: str):
     try:
         # Attempt to pull the model
-        pull_model(model=model)
-        return {"model": model, "status": "success"}
+        job = redis_queue.enqueue(pull_model, model)
+        return {"job_id": job.id}
     except Exception as e:
         # Handle any other unexpected exceptions
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
@@ -31,8 +31,6 @@ async def get_models():
 @router.post('/embed/')
 async def create_embedding(documentpayload: DocumentPayload):
     try:
-        # response, keys = store_embeddings(documentpayload=documentpayload)
-        # return {"response": response, "keys": keys}
         job = redis_queue.enqueue(store_embeddings, documentpayload)
         return {"job_id": job.id}
     except Exception as e:
