@@ -40,6 +40,7 @@ redis_index.create(overwrite=True)
 
 class TextPayload(BaseModel):
     payload: str | List[str]
+
 app = FastAPI()
 
 @app.get('/')
