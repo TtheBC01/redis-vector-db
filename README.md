@@ -54,6 +54,16 @@ curl -X POST http://localhost:8000/embed/ -H "Content-Type: application/json" -d
 
 You can embed many many "documents" at once, but if your text blob is longer than the context size of your embedding model, any text over the limit will be ignored by the model. If this is your situation, you'll need to "chunk" you documents appropriately. For reference, the [`nomic-embed-text`](https://ollama.com/library/nomic-embed-text) model has a context size of 8192 tokens. 
 
+```mermaid
+sequenceDiagram
+    User->>+FastAPI: Document(s)
+    FastAPI->>+RQ: Embedding Job
+    FastAPI->>-User: Job ID
+    RQ->>+Ollama: Embed w/ Parameters
+    Ollama->>-RQ: Return Vectors
+    RQ->>+RedisVL: Store Doc+Vector
+```
+
 ## 5. Check similarity
 
 Now that your Redis instance has some vectors loaded, try to query it:
