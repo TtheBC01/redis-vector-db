@@ -24,7 +24,7 @@ Once you've successfully build the server application and tagged it as `vector-g
 docker compose up -d
 ```
 
-You should have 3 services up: `fastapi`, `redis-server`, and `ollama-service`. If you visit `http://localhost:8000`, you should get 
+You should have 4 services up: `fastapi`, `rq-worker`, `redis-server`, and `ollama-service`. If you visit `http://localhost:8000`, you should get 
 
 ```sh
 {"message":"Redis vector demo is up!"}
