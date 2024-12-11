@@ -1,8 +1,8 @@
-# Redis vector store demo
+# RedisVL + Ollama stack
 
-This repo spins up a minimal docker stack that leverages [Redis](https://redis.io/) + [RedisVL](https://redis.io/docs/latest/integrate/redisvl/) as a vector database for calculating semantic similarity between "documents" (text strings).
+This repo spins up a minimal docker stack that leverages [Redis](https://redis.io/) + [RedisVL](https://redis.io/docs/latest/integrate/redisvl/) as a vector database for calculating semantic similarity between "documents" (text strings) embedded via the [Ollama](https://ollama.com/) inference engine.
 
-The stack defined in `docker-compose.yaml` creates an instance for Redis (for storing vector embeddings), [Ollama](https://ollama.com/) (for creating embeddings), and [FastAPI](https://fastapi.tiangolo.com/) (as a simple "business logic" gateway) as well as an [RQ](https://python-rq.org/) worker service for embedding documents asynchronously. 
+The stack defined in `docker-compose.yaml` creates an instance for Redis (for storing vector embeddings and jobs), Ollama (for creating embeddings), and [FastAPI](https://fastapi.tiangolo.com/) (as a simple "business logic" gateway) as well as an [RQ](https://python-rq.org/) worker service for embedding documents asynchronously. 
 
 **NOTE** Using job queues can offload long-running, computationally intensive processes to other containers keeping server load to a minimum. The are processed in FIFO order so you are in less danger of DDOSing your RAG system by leveraging a job queue architecture. 
 
