@@ -61,7 +61,7 @@ sequenceDiagram
     FastAPI->>-User: Job ID
     RQ->>+Ollama: Embed w/ Parameters
     Ollama->>-RQ: Return Vectors
-    RQ->>+RedisVL: Store Doc+Vector
+    RQ->>+RedisVL: Store Docs+Vectors(+tags)
 ```
 
 ## 5. Check similarity
@@ -73,6 +73,16 @@ curl -X GET http://localhost:8000/search/ -H "Content-Type: application/json" -d
 ```
 
 You'll get the top 3 documents that match your query string in order of relevance as well as their vector distance (computed using cosine similarity).
+
+```mermaid
+sequenceDiagram
+    User->>+FastAPI: User Query String
+    FastAPI->>+Ollama: Embed query
+    Ollama->>-FastAPI: Query vector
+    FastAPI->>+RedisVL: Submit query vector with filters
+    RedisVL->>-FastAPI: k nearest neighbor docs (cosine similarity)
+    FastAPI->>-User: Top results related to query
+```
 
 ## Speed up Embeddings with a GPU
 
